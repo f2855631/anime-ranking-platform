@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>動漫推薦平台</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2rem;
+            background-color: #1c1f26;
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .card-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .card-row {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .card {
+            width: 150px;
+            height: 225px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease;
+            background-color: #000;
+            flex-shrink: 0;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-title {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            font-size: 0.85rem;
+            padding: 6px;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .pagination {
+            text-align: center;
+            margin: 2rem;
+        }
+
+        select {
+            font-size: 1rem;
+            padding: 4px;
+        }
+
+        a {
+            color: #66ccff;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥動漫國度</h1>
+
+    <div class="pagination">
+        <form method="get">
+            <label for="page">跳轉頁數：</label>
+            <select name="page" id="page" onchange="this.form.submit()">
+                {% for p in range(1, total_pages + 1) %}
+                    <option value="{{ p }}" {% if p == current_page %}selected{% endif %}>第 {{ p }} 頁</option>
+                {% endfor %}
+            </select>
+        </form>
+        <div style="margin-top: 1rem;">
+            {% if current_page > 1 %}
+                <a href="/?page={{ current_page - 1 }}">⬅️ 上一頁</a>
+            {% endif %}
+            {% if current_page < total_pages %}
+                <a href="/?page={{ current_page + 1 }}">下一頁 ➡️</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card-wrapper">
+        <div class="card-row">
+            {% for anime in anime_list[:10] %}
+            <div class="card">
+                <img src="{{ anime.image_url }}" alt="{{ anime.name }}">
+                <div class="card-title">{{ anime.name }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="card-row">
+            {% for anime in anime_list[10:20] %}
+            <div class="card">
+                <img src="{{ anime.image_url }}" alt="{{ anime.name }}">
+                <div class="card-title">{{ anime.name }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
